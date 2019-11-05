@@ -1,0 +1,378 @@
+<div class="row justify-content-center">
+  <div class="col-lg-11 col">
+
+    <div class="card">
+      <div class="card-header" style="background:linear-gradient(rgb(128,154,247), rgb(89,57,217));">
+        <div class="text-light" style="background-color:rgba(64,71,252,0); font-size:27px;font-family:Adamina, serif;">
+        My Mentor Placement Test
+        </div>
+      </div>
+
+      <div class="card-header">
+        <strong>Writing for <span style="color: #c0d32f; font-size:1.2rem;">{{this.userService.test_lv}}</span></strong>
+      </div>
+
+      <div class="card-body">
+        <!---- Card Body Part1----->
+        <ng-container *ngIf="this.writingQuestionService.current_part_num===1; else question_part2">
+          <h5 *ngIf="this.userService.test_lv === 'starter'"
+            class="card-title font-weight-bold">Part 1. Make the sentence using the words.</h5>
+          <h5 *ngIf="this.userService.test_lv !== 'starter'"
+              class="card-title font-weight-bold">Part 1. Read the sentence and correct the wrong part.</h5>
+
+          <div class="row justify-content-center mt-3 mb-3">
+            <div class="col col-lg-6 col-md-8 px-0"
+                 style="background: white; min-height: 80px; width: 500px; border-radius:10px; border: 3px gray solid;">
+              <div class="px-3 text-white"
+                   style="background: gray; font-size:1.3rem; border-radius:10px; margin-top: -2px;">Example</div>
+
+              <ng-container *ngIf="this.userService.test_lv === 'starter'">
+                <p class="text-center mt-2" style="font-size: 1.2rem;">
+                  <span class="badge badge-default px-3 py-2 mr-2">is</span>
+                  <span class="badge badge-default px-3 py-2 mr-2">fun</span>
+                  <span class="badge badge-default px-3 py-2">soccer</span>
+                </p>
+                <p class="text-center text-muted" style="font-size: 1.2rem; text-decoration: underline;">
+                  soccer is fun.
+                </p>
+              </ng-container>
+
+              <ng-container *ngIf="this.userService.test_lv === 'basic'">
+                <p class="text-center mt-2" style="font-size: 1.2rem;">He
+                  <span style="text-decoration: line-through; color:#ff383f;">read</span> a book everyday.
+                </p>
+                <p class="text-center text-muted" style="font-size: 1.2rem; text-decoration: underline;">
+                  He <span class="text-body">reads</span> a book every day.
+                </p>
+              </ng-container>
+
+              <ng-container *ngIf="this.userService.test_lv === 'intermediate'">
+                <p class="text-center mt-2" style="font-size: 1.2rem;">I want
+                  <span style="text-decoration: line-through; color:#ff383f;">play</span> with my friends.
+                </p>
+                <p class="text-center text-muted" style="font-size: 1.2rem; text-decoration: underline;">
+                  I want <span class="text-body">to play</span> with my friends.
+                </p>
+              </ng-container>
+
+              <ng-container *ngIf="this.userService.test_lv === 'advanced'">
+                <p class="text-center mt-2" style="font-size: 1.2rem;">The park
+                  <span style="text-decoration: line-through; color:#ff383f;">covered</span> with snow.
+                </p>
+                <p class="text-center text-muted" style="font-size: 1.2rem; text-decoration: underline;">
+                  The park <span class="text-body">is covered</span> with snow.
+                </p>
+              </ng-container>
+
+            </div>
+          </div>
+
+          <div class="row" *ngFor="let question of this.writingQuestionService.questions[this.userService.test_lv]['part1']; let i = index">
+            <div class="col-12 col-lg-6">
+              <div>
+                <span class="mr-2">{{i+1}}.</span>
+                <div class="d-inline-block" *ngIf="this.userService.test_lv === 'starter'" [innerHTML]="this.displayWordBlocks(question)"></div>
+                <span *ngIf="this.userService.test_lv !== 'starter'">{{question}}</span>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <!-- Medium input -->
+              <div class="md-form">
+                <input mdbInputDirective  type="text"
+                       [value]="this.writingQuestionService.my_answers[i]"
+                       [id]="'question_input_' + i"
+                       class="form-control">
+                <label [for]="'question_input_' + i">My Answer</label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+
+        <!---- Card Body Part2----->
+        <ng-template #question_part2>
+          <h5 class="card-title font-weight-bold">Part 2. Answer the following questions.</h5>
+          <!-- Medium input -->
+          <div class="row mt-3">
+            <div class="col-12">
+              <span>{{this.writingQuestionService.current_problem_num}}.
+                {{this.writingQuestionService.questions[this.userService.test_lv]['part2'][this.writingQuestionService.current_problem_num-this.writingQuestionService.part1_problem_num-1]}}
+              </span>
+            </div>
+            <div class="col-12">
+              <!--Textarea with icon prefix-->
+              <div class="md-form amber-textarea active-amber-textarea">
+                <i class="fas fa-pencil-alt prefix"></i>
+                <textarea mdbInputDirective type="text"
+                          [id]="'question_input_' + this.writingQuestionService.current_problem_num"
+                          class="md-textarea form-control" rows="3"
+                          [innerHTML]="this.writingQuestionService.my_answers[this.writingQuestionService.current_problem_num - 1]">
+                </textarea>
+                <label [for]="'question_input_' + this.writingQuestionService.current_problem_num">My Answer</label>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </div>
+      <!---- Card Body Ends----->
+
+      <!---- Card Footer STARTS----->
+      <div class="card-footer p-1 px-3">
+        <div class="row align-items-center pt-md-0 pt-2">
+
+          <div class="col-12 col-md-5">
+            <span class="mr-2">Part 1</span>
+            <div class="btn-toolbar d-inline mr-4" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="btn-group btn-group-sm" role="group" aria-label="First group">
+                <button type="button"
+                        *ngFor="let question of this.writingQuestionService.questions[this.userService.test_lv]['part1']; let i = index"
+                        class="btn btn-sm"
+                        [ngClass]="this.writingQuestionService.current_part_num === 1 ? 'btn-primary' : 'btn-custom-gray'"
+                        (click)="this.changeCurrentProblem(i+1)">{{i+1}}</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-8 col-md-5">
+            <span class="mr-2">Part 2</span>
+            <div class="btn-toolbar d-inline" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="btn-group btn-group-sm" role="group" aria-label="First group">
+                <button type="button"
+                        *ngFor="let question of this.writingQuestionService.questions[this.userService.test_lv]['part2']; let i = index"
+                        class="btn btn-sm"
+                        [ngClass]="this.writingQuestionService.current_problem_num ===
+                        this.writingQuestionService.questions[this.userService.test_lv]['part1'].length + i + 1 ? 'btn-primary' : 'btn-custom-gray'"
+                        (click)="this.changeCurrentProblem(this.writingQuestionService.questions[this.userService.test_lv]['part1'].length + i + 1)">
+                  {{this.writingQuestionService.questions[this.userService.test_lv]['part1'].length + i + 1}}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 col-md-2 text-right">
+            <button class="btn young-passion-gradient" id="next_button"
+                    style="font-size:16px; font-family:Adamina, serif;"
+                    (click)="this.nextQuestion()">
+              <span *ngIf="this.writingQuestionService.current_problem_num !==10">Next</span>
+              <span *ngIf="this.writingQuestionService.current_problem_num ===10">Finish</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div> <!---- Card Footer Ends----->
+
+    </div>
+
+
+    <!---------------------Teacher Grading section ---------------->
+
+    <div class="card mt-4">
+      <div class="card-header">
+        Teacher Grading
+      </div>
+      <div class="card-body">
+
+        <!-------------Teacher Grading Part1------------>
+        <ng-container *ngIf="this.writingQuestionService.current_part_num === 1; else grade_part2">
+          <p>
+            <span style="color:red;">!</span>
+            Result 부분을 클릭하여 정답 여부를 체크해주세요. 체크 후 Next 버튼을 클릭하시면 체크 결과가 저장됩니다.
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-hover text-center">
+              <thead style="background-color: #b8daff;">
+              <tr>
+                <th scope="col">Number</th>
+                <th scope="col">Result</th>
+                <th scope="col">Answer</th>
+                <th scope="col">My Answer</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let answer of this.writingQuestionService.answers[this.userService.test_lv]['part1']; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td style="cursor: pointer;" (click)="this.tableRowClicked(i);" [id]="'table_row_' + i">
+                  <i class="fas fa-times" style="font-size:1.5rem;"></i>
+                </td>
+                <td>{{answer}}</td>
+                <td>{{this.writingQuestionService.my_answers[i]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+
+        <!-------------Teacher Grading Part2------------>
+        <ng-template #grade_part2>
+
+          <div class="row" style="margin-top:20px;margin-bottom:20px;">
+            <div class="col-12 col-lg-2 text-center">
+              <span class="d-flex badge badge-primary justify-content-center p-2" style="font-size:1.25rem;">예시 답안</span>
+            </div>
+            <div class="col">
+              <div class="answer_div_style" id="answer_div_sample">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:20px;">
+            <div class="col-12 col-lg-2">
+              <span id="part_span_element" class="d-flex badge badge-primary justify-content-center p-2" style="font-size:1.25rem;">Part 2</span>
+            </div>
+            <div class="col">
+              <div class="table-responsive" id="grade_table">
+                <table class="table table-bordered table-sm">
+                  <thead>
+                  <tr>
+                    <th class="table-light criteria_col" colspan="1" style="font-family:Adamina, serif;">Criteria</th>
+                    <th class="table-light score_col" colspan="1" style="font-family:Adamina, serif;">Score</th>
+                    <th class="table-light evaluation_col" colspan="1" style="font-family:Adamina, serif;">Evaluation</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td class="table-primary criteria_col" rowspan="4" style="font-family:Adamina, serif;"><span><strong>Task Completion</strong><br><br></span></td>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="task_3" name="task" value="3" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="task_3" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">③ 완벽하게 과제를 수행함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="task_2" name="task" value="2" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="task_2" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">②&nbsp;양호하나 완벽하지 못하게 과제를 수행함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="task_1" name="task" value="1" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="task_1" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">①&nbsp;빈약하거나 완벽하지 못하게 과제를 수행함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="task_0" name="task" value="0" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="task_0" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">0 과제를 수행하지 못함. 무응답, 또는 부적적할 내용이 70% 이상 차지함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-primary criteria_col" rowspan="4" style="font-family:Adamina, serif;"><span style="margin:0 auto;"><strong>Language Use</strong><br><br></span></td>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="language_3" name="language" value="3" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="language_3" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">③&nbsp;주어진 과제와 관련된 내용이 구체적으로 잘 전개됨</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="language_2" name="language" value="2" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="language_2" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">② 주어진 과제와 관련된 내용이 구체적이지 못하고 내용 전개가 논리적이지 않음</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="language_1" name="language" value="1" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="language_1" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">① 주어진 과제와 관련된 내용 전개를 시도하나 관련성이 없고 논리적이지 않으며 완성되지 않음</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="language_0" name="language" value="0" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="language_0" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">0 관련이 전혀 없는 내용임</td>
+                  </tr>
+                  <tr>
+                    <td class="table-primary criteria_col" rowspan="4" style="font-family:Adamina, serif;"><span><strong>Grammar & Spelling</strong><br></span></td>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="grammar_3" name="grammar" value="3" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="grammar_3" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">③&nbsp;문법 및 철자 오류가 거의 없음. 어휘가 일반적으로 잘 선별되어 사용되며 주제가 명확하게 표현됨</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="grammar_2" name="grammar" value="2" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="grammar_2" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">② 문법 및 철자 오류가 일부 발생하여 내용에 영향을 줌</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="grammar_1" name="grammar" value="1" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="grammar_1" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">① 문법, 철자 및 어휘 사용에 대한 오류가 심각하게 내용을 거의 전달하지 못함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-light score_col">
+                      <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="grammar_0" name="grammar" value="0" (click)="this.handleRadioClick($event)">
+                        <label class="custom-control-label" for="grammar_0" style="margin-right:-8px;"></label>
+                      </div>
+                    </td>
+                    <td class="table-success">0 언어 오류가 아주 심각하여 이해가 불가능함</td>
+                  </tr>
+                  <tr>
+                    <td class="table-primary criteria_col" style="font-family:Adamina, serif;">Total</td>
+                    <td class="table-light score_col" id="total_score_cell">0</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </ng-template>
+
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+
+<form id="score_form" method="post" action="save_ibhui_teacher.php">
+  <input type="hidden" name="iid" value="<?=$iid?>">
+  <input type="hidden" name="point_name" value="sp1">
+  <input type="hidden" name="point_value" value="">
+</form>
+<!-- Not being used -->
+<form id="xml_form" method="post" action="getOx.php">
+  <input type="hidden" name="iid" value="373">
+  <input type="hidden" name="test_lv" value="basic">
+  <input type="hidden" name="section" value="speaking">
+</form>
